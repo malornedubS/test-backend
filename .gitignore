@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.cache
+appsettings.Development.json
+employees.db
+Migrations/
+
