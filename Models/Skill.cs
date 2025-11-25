@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 
 [Owned]
+/// <summary>
+/// Навык с названием и уровнем (1-10).
+/// </summary>
 public class Skill
 {
     [Required]

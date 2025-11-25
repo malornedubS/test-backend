@@ -2,6 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TestBackEnd.Models;
 
+/// <summary>
+/// Сотрудник компании.
+/// </summary>
 public class Person
 {
     public long Id { get; set; }

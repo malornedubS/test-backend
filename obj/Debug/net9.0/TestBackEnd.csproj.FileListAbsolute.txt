@@ -156,3 +156,4 @@ C:\Users\Max\Documents\TestBackEnd\TestBackEnd\obj\Debug\net9.0\TestBackEnd.genr
 C:\Users\Max\Documents\TestBackEnd\TestBackEnd\obj\Debug\net9.0\ref\TestBackEnd.dll
 C:\Users\Max\Documents\TestBackEnd\TestBackEnd\bin\Debug\net9.0\Npgsql.dll
 C:\Users\Max\Documents\TestBackEnd\TestBackEnd\bin\Debug\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\Max\Documents\TestBackEnd\TestBackEnd\obj\Debug\net9.0\TestBackEnd.sourcelink.json
