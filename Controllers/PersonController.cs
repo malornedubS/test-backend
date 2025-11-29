@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TestBackEnd.Models;
+using TestBackEnd.Services.Interfaces;
 using TestBackEnd.Services;
 
 namespace TestBackEnd.Controllers
@@ -8,14 +9,14 @@ namespace TestBackEnd.Controllers
     [Route("api/v1/[controller]")]
     public class PersonController : ControllerBase
     {
-        private readonly PersonService _personService;
+        private readonly IPersonService _personService;
 
-        public PersonController(PersonService personService)
+        public PersonController(IPersonService personService)
         {
             _personService = personService;
         }
 
-        // GET api/v1/persons
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -37,7 +38,7 @@ namespace TestBackEnd.Controllers
             return Ok(person);
         }
 
-        // POST api/v1/persons
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,7 +49,7 @@ namespace TestBackEnd.Controllers
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
-        // PUT api/v1/persons/{id}
+
         [HttpPut("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -61,7 +62,7 @@ namespace TestBackEnd.Controllers
             return Ok(updated);
         }
 
-        // DELETE api/v1/persons/{id}
+
         [HttpDelete("{id:long}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
