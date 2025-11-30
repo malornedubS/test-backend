@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using TestBackEnd.Data;
 using TestBackEnd.Data.Repositories;
+using TestBackEnd.Middlewares;
 using TestBackEnd.Repositories;
 using TestBackEnd.Services;
 using TestBackEnd.Services.Interfaces;
@@ -26,6 +28,7 @@ builder.Services.AddControllers();
 var app = builder.Build();
 
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapControllers();

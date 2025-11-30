@@ -1,14 +1,13 @@
-using TestBackEnd.Models;
+using TestBackEnd.Dto;
 
 namespace TestBackEnd.Services.Interfaces
 {
     public interface IPersonService
     {
-        Task<List<Person>> GetAllAsync();
-        Task<Person?> GetByIdAsync(long id);
-        Task<Person> AddPersonAsync(Person person);
-        Task<Person?> UpdatePersonAsync(long id, Person person);
-        Task<bool> DeletePersonAsync(long id);
-        Task AddSkillAsync(long personId, Skill skill);
+        Task<List<PersonDto>> GetAllPersonsAsync();
+        Task<PersonDto> GetPersonByIdAsync(long id);
+        Task<PersonDto> CreatePersonAsync(CreatePersonDto person);
+        Task<PersonDto> UpdatePersonAsync(long id, UpdatePersonDto person);
+        Task DeletePersonAsync(long id);
     }
 }

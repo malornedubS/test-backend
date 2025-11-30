@@ -16,17 +16,13 @@ namespace TestBackEnd.Repositories
         }
 
 
-
-        // Получение всех пользователей вместе с навыками      
-        public async Task<List<Person>> GetAllAsync()
+        public async Task<List<Person>> GetAllPersonsAsync()
         {
             return await _db.Persons.Include(p => p.Skills).ToListAsync();
         }
 
 
-
-        // Получение пользователя по идентификатору вместе с навыками
-        public async Task<Person?> GetByIdAsync(long id)
+        public async Task<Person?> GetPersonByIdAsync(long id)
         {
             return await _db.Persons
                 .Include(p => p.Skills)
@@ -34,9 +30,7 @@ namespace TestBackEnd.Repositories
         }
 
 
-
-        // Добавление нового пользователя
-        public async Task<Person> AddAsync(Person person)
+        public async Task<Person> CreatePersonAsync(Person person)
         {
             _db.Persons.Add(person);
             await _db.SaveChangesAsync();
@@ -44,18 +38,14 @@ namespace TestBackEnd.Repositories
         }
 
 
-
-        // Обновление информации о пользователе
-        public async Task UpdateAsync(Person person)
+        public async Task UpdatePersonAsync(Person person)
         {
             _db.Persons.Update(person);
             await _db.SaveChangesAsync();
         }
 
 
-
-        // Удаление пользователя
-        public async Task DeleteAsync(Person person)
+        public async Task DeletePersonAsync(Person person)
         {
             _db.Persons.Remove(person);
             await _db.SaveChangesAsync();

@@ -1,8 +1,10 @@
-using Microsoft.EntityFrameworkCore;
+
 using TestBackEnd.Services.Interfaces;
-using TestBackEnd.Data;
-using TestBackEnd.Models;
 using TestBackEnd.Data.Repositories;
+using TestBackEnd.Models;
+using TestBackEnd.Dto;
+using TestBackEnd.Exceptions;
+
 
 namespace TestBackEnd.Services
 {
@@ -15,41 +17,87 @@ namespace TestBackEnd.Services
             _repo = repo;
         }
 
-        public Task<List<Person>> GetAllAsync() => _repo.GetAllAsync();
-
-        public Task<Person?> GetByIdAsync(long id) => _repo.GetByIdAsync(id);
-
-        public Task<Person> AddPersonAsync(Person person) => _repo.AddAsync(person);
-
-        public async Task AddSkillAsync(long id, Skill skill)
+        public async Task<List<PersonDto>> GetAllPersonsAsync()
         {
-            var person = await _repo.GetByIdAsync(id);
-            if (person == null) return;
-
-            person.Skills.Add(skill);
-            await _repo.UpdateAsync(person);
+            var persons = await _repo.GetAllPersonsAsync();
+            return persons.Select(ToDto).ToList();
         }
 
-        public async Task<Person?> UpdatePersonAsync(long id, Person updated)
+        public async Task<PersonDto> GetPersonByIdAsync(long id)
         {
-            var existing = await _repo.GetByIdAsync(id);
-            if (existing == null) return null;
+            var person = await _repo.GetPersonByIdAsync(id);
+            if (person == null)
+                throw new NotFoundException($"Сотрудник с id:{id} не найден");
 
-            existing.Name = updated.Name;
-            existing.DisplayName = updated.DisplayName;
-            existing.Skills = updated.Skills;
-
-            await _repo.UpdateAsync(existing);
-            return existing;
+            return ToDto(person);
         }
 
-        public async Task<bool> DeletePersonAsync(long id)
+        public async Task<PersonDto> CreatePersonAsync(CreatePersonDto dto)
         {
-            var person = await _repo.GetByIdAsync(id);
-            if (person == null) return false;
+            var entity = new Person
+            {
+                Name = dto.Name,
+                DisplayName = dto.DisplayName,
+                Skills = dto.Skills?.Select(s => new Skill
+                {
+                    Name = s.Name,
+                    Level = (byte)s.Level
+                }).ToList() ?? new List<Skill>()
+            };
 
-            await _repo.DeleteAsync(person);
-            return true;
+            var created = await _repo.CreatePersonAsync(entity);
+            return ToDto(created);
+        }
+
+        public async Task<PersonDto> UpdatePersonAsync(long id, UpdatePersonDto dto)
+        {
+            var existing = await _repo.GetPersonByIdAsync(id);
+            if (existing == null)
+                throw new NotFoundException($"Сотрудник с id:{id} не найден");
+
+            existing.Name = dto.Name;
+            existing.DisplayName = dto.DisplayName;
+
+            existing.Skills.Clear();
+            if (dto.Skills != null)
+            {
+                foreach (var skillDto in dto.Skills)
+                {
+                    existing.Skills.Add(new Skill
+                    {
+                        Name = skillDto.Name,
+                        Level = (byte)skillDto.Level
+                    });
+                }
+            }
+
+            await _repo.UpdatePersonAsync(existing);
+            return ToDto(existing);
+        }
+
+        public async Task DeletePersonAsync(long id)
+        {
+            var person = await _repo.GetPersonByIdAsync(id);
+            if (person == null)
+                throw new NotFoundException($"Person with id {id} not found");
+
+            await _repo.DeletePersonAsync(person);
+        }
+
+        // преобразования Person в PersonDto
+        private PersonDto ToDto(Person person)
+        {
+            return new PersonDto
+            {
+                Id = person.Id,
+                Name = person.Name,
+                DisplayName = person.DisplayName,
+                Skills = person.Skills.Select(s => new SkillDto
+                {
+                    Name = s.Name,
+                    Level = s.Level
+                }).ToList()
+            };
         }
     }
 }
