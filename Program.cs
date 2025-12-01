@@ -9,13 +9,6 @@ using TestBackEnd.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers()
-    .ConfigureApiBehaviorOptions(options =>
-    {
-        // Отключил автоматическую обработку ошибок валидации модели, чтобы использовать своё middleware
-        options.SuppressModelStateInvalidFilter = true;
-    });
-
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,7 +24,12 @@ builder.Services.AddScoped<IPersonRepository, PersonRepository>();
 
 // Сервисы
 builder.Services.AddScoped<IPersonService, PersonService>();
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        // Отключил автоматическую обработку ошибок валидации модели, чтобы использовать своё middleware
+        options.SuppressModelStateInvalidFilter = true;
+    });
 var app = builder.Build();
 
 
