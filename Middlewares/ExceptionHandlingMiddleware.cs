@@ -23,7 +23,7 @@ public class ExceptionHandlingMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Internal server error.");
+            _logger.LogError(ex, "Внутренняя ошибка сервера.");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -32,6 +32,12 @@ public class ExceptionHandlingMiddleware
     {
         HttpStatusCode statusCode = HttpStatusCode.InternalServerError;
         string message = ex.Message;
+
+        // Тут пока просто исключения покрывают базовые сценарии
+        // - NotFoundException (404) - ресурс не найден
+        //- BadRequestException (400) - некорректный запрос
+        // При необходимости можно добавить обработку других HTTP статусов
+
 
         if (ex is NotFoundException)
         {
