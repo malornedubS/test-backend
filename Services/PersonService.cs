@@ -79,7 +79,7 @@ namespace TestBackEnd.Services
         {
             var person = await _repo.GetPersonByIdAsync(id);
             if (person == null)
-                throw new NotFoundException($"Person with id {id} not found");
+                throw new NotFoundException($"Сотрудник с id:{id} не найден");
 
             await _repo.DeletePersonAsync(person);
         }

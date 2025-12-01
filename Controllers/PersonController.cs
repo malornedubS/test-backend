@@ -32,6 +32,16 @@ namespace TestBackEnd.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreatePersonDto dto)
         {
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage)
+                    .ToArray();
+
+                throw new BadRequestException($"Ошибка валидации: {string.Join("; ", errors)}");
+            }
             var created = await _personService.CreatePersonAsync(dto);
             return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }

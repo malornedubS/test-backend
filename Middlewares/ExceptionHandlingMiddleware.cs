@@ -37,8 +37,6 @@ public class ExceptionHandlingMiddleware
         {
             statusCode = HttpStatusCode.NotFound;
         }
-        // я сделал это исключение но не использую его, я так понял что валидация запроса в контроллере проходит автоматически
-        // через ModelState или я не прав и это лучше сделать в ручную?)))
         else if (ex is BadRequestException)
         {
             statusCode = HttpStatusCode.BadRequest;
